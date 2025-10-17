@@ -64,4 +64,5 @@ class VoyagesController extends AbstractController {
             'visite' => $visite
         ]);
     }
+    
 }

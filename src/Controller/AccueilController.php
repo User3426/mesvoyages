@@ -4,6 +4,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\VisiteRepository;
 
 /**
  * Description of AccueilController
@@ -12,8 +13,29 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AccueilController extends AbstractController {
     
+    
+    /**
+     * 
+     * @var VisiteRepository
+     */
+    private $repository;
+    
+    /**
+     * 
+     * @param VisiteRepository $repository
+     */
+    public function __construct(VisiteRepository $repository) {
+        $this->repository = $repository;
+    }
+
+    
     #[Route('/', name: 'accueil')]
     public function index(): Response{
-        return $this->render("pages/accueil.html.twig");
+        // récupérer les deux derniers voyages
+        $lastVoyages = $this->repository->findLastTwoVoyages();
+        return $this->render("pages/accueil.html.twig", [
+            'lastVoyages' => $lastVoyages,
+        ]);
     }
+    
 }
